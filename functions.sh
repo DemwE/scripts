@@ -428,10 +428,6 @@ fi
 device=$(dmidecode -s system-product-name | tr '[:upper:]' '[:lower:]' | sed 's/ /_/g' | awk 'NR==1{print $1}')
 diagnostic_report_set dmidecode.device "$device"
 
-echo_green "=== DEBUG INFO ==="
-echo_yellow "DEBUG: device = '$device'"
-read -p "Naciśnij ENTER aby kontynuować (1/3)..."
-
 if [[ $? -ne 0 || "${device}" = "" ]]; then
     echo_red "Unable to determine Chromebox/book model; cannot continue."
     echo_red "It's likely you are using an unsupported ARM-based ChromeOS device,\nonly x86_64-based devices are supported at this time."
@@ -645,13 +641,6 @@ fi
 
 diagnostic_report_set _hwid "$_hwid"
 diagnostic_report_set boardName "$boardName"
-
-echo_green "=== DEBUG INFO 2 ==="
-echo_yellow "DEBUG: firmwareType = '$firmwareType'"
-echo_yellow "DEBUG: _hwid = '$_hwid'"
-echo_yellow "DEBUG: boardName = '$boardName'"
-echo_yellow "DEBUG: device (po HWID) = '$device'"
-read -p "Naciśnij ENTER aby kontynuować (2/3)..."
 
 case "${_hwid}" in
     AKALI*)                 _x='KBL|Acer Chromebook 13 / Spin 13' ; device="nami";;
@@ -1090,16 +1079,6 @@ case "${_hwid}" in
     ZAVALA*)                _x='ADL|Acer Chromebook Vero 712' ;;
     *)                      _x='UNK|ERROR: unknown or unidentifiable device' ;;
 esac
-
-echo_green "=== DEBUG INFO 3 (FINAL) ==="
-echo_yellow "DEBUG: Match result _x = '$_x'"
-echo_yellow "DEBUG: Final device = '$device'"
-if [[ "$_x" == *"unknown"* ]]; then
-    echo_red "BŁĄD: Nie znaleziono dopasowania dla HWID: '${_hwid}'"
-else
-    echo_green "SUKCES: Znaleziono dopasowanie!"
-fi
-read -p "Naciśnij ENTER aby kontynuować (3/3)..."
 
 diagnostic_report_set device "$device"
 

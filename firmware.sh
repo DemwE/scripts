@@ -1124,6 +1124,7 @@ function stock_menu() {
     if [[ "$unlockMenu" = true || "$isUEFI" = true ]]; then
         echo -e "${MENU}**${WP_TEXT}     ${NUMBER} C)${MENU} Clear UEFI NVRAM ${NORMAL}"
     fi
+    echo -e "${MENU}**${WP_TEXT}     ${NUMBER} D)${MENU} Debug Device Info ${NORMAL}"
     echo -e "${MENU}*********************************************************${NORMAL}"
     echo -e "${ENTER_LINE}Select a numeric menu option or${NORMAL}"
     echo -e "${nvram}${RED_TEXT}R${NORMAL} to reboot ${NORMAL} ${RED_TEXT}P${NORMAL} to poweroff ${NORMAL} ${RED_TEXT}Q${NORMAL} to quit ${NORMAL}"
@@ -1216,6 +1217,10 @@ function stock_menu() {
             menu_fwupdate
             ;;
 
+        [dD]) debug_device_info
+            menu_fwupdate
+            ;;
+
         *)  clear
             menu_fwupdate;
             ;;
@@ -1246,6 +1251,7 @@ function uefi_menu() {
     if [[ "$unlockMenu" = true || "$isUEFI" = true ]]; then
         echo -e "${MENU}**${WP_TEXT}     ${NUMBER} C)${MENU} Clear UEFI NVRAM ${NORMAL}"
     fi
+    echo -e "${MENU}**${WP_TEXT}     ${NUMBER} 9)${MENU} Debug Device Info ${NORMAL}"
     echo -e "${MENU}*********************************************************${NORMAL}"
     echo -e "${ENTER_LINE}Select a numeric menu option or${NORMAL}"
     echo -e "${nvram}${RED_TEXT}R${NORMAL} to reboot ${NORMAL} ${RED_TEXT}P${NORMAL} to poweroff ${NORMAL} ${RED_TEXT}Q${NORMAL} to quit ${NORMAL}"
@@ -1308,8 +1314,32 @@ function uefi_menu() {
             uefi_menu
             ;;
 
+        9) debug_device_info
+            uefi_menu
+            ;;
+
         *)  clear
             uefi_menu;
             ;;
     esac
+}
+
+function debug_device_info() {
+    echo_green "\n=== DEBUG DEVICE INFO ==="
+    echo_yellow "DEBUG: device (from dmidecode) = '$device'"
+    echo_yellow "DEBUG: firmwareType = '$firmwareType'"
+    echo_yellow "DEBUG: _hwid = '$_hwid'"
+    echo_yellow "DEBUG: boardName = '$boardName'"
+    echo_yellow "DEBUG: Match result _x = '$_x'"
+    echo_yellow "DEBUG: deviceDesc = '$deviceDesc'"
+    echo_yellow "DEBUG: deviceCpuType = '$deviceCpuType'"
+
+    if [[ "$_x" == *"unknown"* ]]; then
+        echo_red "\nBŁĄD: Nie znaleziono dopasowania dla HWID: '${_hwid}'"
+        echo_yellow "Sprawdź czy HWID jest poprawny i czy istnieje wpis w case statement"
+    else
+        echo_green "\nSUKCES: Znaleziono dopasowanie!"
+    fi
+
+    read -p "\nNaciśnij ENTER aby powrócić do menu..."
 }
