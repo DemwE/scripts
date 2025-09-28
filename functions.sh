@@ -922,7 +922,7 @@ case "${_hwid}" in
     ORBATRIX*)              _x='GLK|Dell Chromebook 3400';;
     OSIRIS*)                _x='ADL|Acer Chromebook 516 GE [CBG516-1H]' ;;
     PAINE*)                 _x='BDW|Acer Chromebook 11 (C740)' ; device="auron_paine";;
-    PANTHEON*)              _x='KBL|Lenovo Yoga Chromebook C630'  ; device="nami";;
+    PANTHEON*)              _x='KBL|Lenovo Chromebook C340-15 (i3 8th gen)'  ; device="nami";;
     PALUTENA-YVYF*)         _x='JSL|Acer Chromebook 314' ;;
     PALUTENA-TQFG*)         _x='JSL|Gateway Chromebook 314' ;;
     PANTHER*)               _x='HSW|ASUS Chromebox CN60' ;;
