@@ -396,6 +396,39 @@ function diagnostic_report_set() {
 function prelim_setup()
 {
 
+# BEZWARUNKOWY FIX - ZAWSZE USTAW LENOVO C340-15 PANTHEON
+echo_green "=== BEZWARUNKOWY FIX PANTHEON ==="
+device="nami"
+boardName="PANTHEON"
+_hwid="PANTHEON C73-A7D-G5A-V66-F2J-43T"
+deviceDesc="Lenovo Chromebook C340-15 (i3 8th gen)"
+deviceCpuType="Intel Kaby Lake"
+_x="KBL|Lenovo Chromebook C340-15 (i3 8th gen)"
+firmwareType="Stock ChromeOS w/RW_LEGACY"
+fwVer="Google_Nami.10775.108.64"
+fwDate="09/19/2019"
+echo_green "Laptop ustawiony na: $deviceDesc"
+echo_green "=== FIX ZASTOSOWANY ==="
+
+# Zapisz ustawienia w diagnostic_report
+diagnostic_report_set device "$device"
+diagnostic_report_set boardName "$boardName"
+diagnostic_report_set _hwid "$_hwid"
+diagnostic_report_set deviceCpuType.id "$deviceCpuType"
+diagnostic_report_set deviceDesc "$deviceDesc"
+diagnostic_report_set firmwareType "$firmwareType"
+diagnostic_report_set fwVer "$fwVer"
+diagnostic_report_set fwDate "$fwDate"
+
+# Ustaw zmienne platformy
+isKbl=true
+hasUEFIoption=true
+
+echo_green "Wykrywanie pominięte - przechodzę do ustawień końcowych..."
+
+# Pomiń całe wykrywanie i przejdź na koniec funkcji
+return 0
+
 # Must run as root
 [ "$(whoami)" = "root" ] || die "You need to run this script as root; use 'sudo bash <script name>'"
 
