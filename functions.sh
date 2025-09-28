@@ -395,9 +395,6 @@ function diagnostic_report_set() {
 
 function prelim_setup()
 {
-echo "DEBUG: device = '$device'"
-echo "DEBUG: _hwid = '$_hwid'"
-echo "DEBUG: boardName = '$boardName'"
 
 # Must run as root
 [ "$(whoami)" = "root" ] || die "You need to run this script as root; use 'sudo bash <script name>'"

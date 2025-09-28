@@ -44,6 +44,9 @@ if [ ! -d "$script_dir/.git" ]; then
     script_dir="."
 
     #get support scripts
+    echo "DEBUG: device = '$device'"
+    echo "DEBUG: _hwid = '$_hwid'"
+    echo "DEBUG: boardName = '$boardName'"
     echo -e "\nDownloading supporting files..."
     rm -rf firmware.sh >/dev/null 2>&1
     rm -rf functions.sh >/dev/null 2>&1
