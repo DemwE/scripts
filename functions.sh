@@ -430,6 +430,7 @@ diagnostic_report_set dmidecode.device "$device"
 
 # HARDCODED FIX for PANTHEON C340-15
 _hwid_check=$(crossystem hwid 2>/dev/null || echo "")
+echo_yellow "DEBUG: _hwid_check = '$_hwid_check'"
 if [[ "$_hwid_check" == "PANTHEON"* ]]; then
     echo_green "Wykryto PANTHEON - ustawiam twardo Lenovo C340-15"
     device="nami"
@@ -443,6 +444,8 @@ if [[ "$_hwid_check" == "PANTHEON"* ]]; then
     diagnostic_report_set boardName "$boardName"
     diagnostic_report_set _hwid "$_hwid"
     echo_green "PANTHEON fix zastosowany - kontynuuję..."
+else
+    echo_yellow "PANTHEON nie wykryty, _hwid_check = '$_hwid_check'"
 fi
 
 if [[ $? -ne 0 || "${device}" = "" ]]; then
