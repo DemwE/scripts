@@ -395,6 +395,9 @@ function diagnostic_report_set() {
 
 function prelim_setup()
 {
+echo "DEBUG: device = '$device'"
+echo "DEBUG: _hwid = '$_hwid'"
+echo "DEBUG: boardName = '$boardName'"
 
 # Must run as root
 [ "$(whoami)" = "root" ] || die "You need to run this script as root; use 'sudo bash <script name>'"
@@ -923,6 +926,7 @@ case "${_hwid}" in
     OSIRIS*)                _x='ADL|Acer Chromebook 516 GE [CBG516-1H]' ;;
     PAINE*)                 _x='BDW|Acer Chromebook 11 (C740)' ; device="auron_paine";;
     PANTHEON*)              _x='KBL|Lenovo Chromebook C340-15 (i3 8th gen)'  ; device="nami";;
+    'PANTHEON '*)           _x='KBL|Lenovo Chromebook C340-15 (i3 8th gen)'  ; device="nami";;
     PALUTENA-YVYF*)         _x='JSL|Acer Chromebook 314' ;;
     PALUTENA-TQFG*)         _x='JSL|Gateway Chromebook 314' ;;
     PANTHER*)               _x='HSW|ASUS Chromebox CN60' ;;
