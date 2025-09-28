@@ -428,6 +428,23 @@ fi
 device=$(dmidecode -s system-product-name | tr '[:upper:]' '[:lower:]' | sed 's/ /_/g' | awk 'NR==1{print $1}')
 diagnostic_report_set dmidecode.device "$device"
 
+# HARDCODED FIX for PANTHEON C340-15
+_hwid_check=$(crossystem hwid 2>/dev/null || echo "")
+if [[ "$_hwid_check" == "PANTHEON"* ]]; then
+    echo_green "Wykryto PANTHEON - ustawiam twardo Lenovo C340-15"
+    device="nami"
+    boardName="PANTHEON"
+    _hwid="$_hwid_check"
+    deviceDesc="Lenovo Chromebook C340-15 (i3 8th gen)"
+    deviceCpuType="KBL"
+    _x="KBL|Lenovo Chromebook C340-15 (i3 8th gen)"
+    # Skip normal detection and go straight to final setup
+    diagnostic_report_set device "$device"
+    diagnostic_report_set boardName "$boardName"
+    diagnostic_report_set _hwid "$_hwid"
+    echo_green "PANTHEON fix zastosowany - kontynuuję..."
+fi
+
 if [[ $? -ne 0 || "${device}" = "" ]]; then
     echo_red "Unable to determine Chromebox/book model; cannot continue."
     echo_red "It's likely you are using an unsupported ARM-based ChromeOS device,\nonly x86_64-based devices are supported at this time."
@@ -623,25 +640,30 @@ fi
 diagnostic_report_set firmwareType "$firmwareType"
 
 # Get/set HWID, boardname, device
-if echo "$firmwareType" | grep -e "Stock"; then
-        if [[ "$isChromeOS" = true && ! -d /sys/firmware/efi ]]; then
-                # Stock ChromeOS
-                _hwid=$(crossystem hwid)
-        else
-            # Stock + RW_LEGACY: read HWID from GBB
-            _hwid=$($gbbutilitycmd --get --hwid /tmp/bios.bin | sed -E 's/hardware_id: //g')
-        fi
-        _hwid=$(echo "$_hwid" | sed -E 's/X86//g' | sed -E 's/ *$//g')
-        boardName=$(echo "${_hwid^^}" | cut -f1 -d '-' | cut -f1 -d ' ')
-        device=${boardName,,}
-else
-        _hwid=${device^^}
-        boardName=${device^^}
+# Skip if already set by PANTHEON hardcode fix
+if [[ "$boardName" != "PANTHEON" ]]; then
+    if echo "$firmwareType" | grep -e "Stock"; then
+            if [[ "$isChromeOS" = true && ! -d /sys/firmware/efi ]]; then
+                    # Stock ChromeOS
+                    _hwid=$(crossystem hwid)
+            else
+                # Stock + RW_LEGACY: read HWID from GBB
+                _hwid=$($gbbutilitycmd --get --hwid /tmp/bios.bin | sed -E 's/hardware_id: //g')
+            fi
+            _hwid=$(echo "$_hwid" | sed -E 's/X86//g' | sed -E 's/ *$//g')
+            boardName=$(echo "${_hwid^^}" | cut -f1 -d '-' | cut -f1 -d ' ')
+            device=${boardName,,}
+    else
+            _hwid=${device^^}
+            boardName=${device^^}
+    fi
+
+    diagnostic_report_set _hwid "$_hwid"
+    diagnostic_report_set boardName "$boardName"
 fi
 
-diagnostic_report_set _hwid "$_hwid"
-diagnostic_report_set boardName "$boardName"
-
+# Skip case statement if _x already set by hardcode fix
+if [[ -z "$_x" ]]; then
 case "${_hwid}" in
     AKALI*)                 _x='KBL|Acer Chromebook 13 / Spin 13' ; device="nami";;
     AKEMI*)                 _x='CML|Lenovo Ideapad Flex 5 Chromebook' ;;
@@ -1079,6 +1101,7 @@ case "${_hwid}" in
     ZAVALA*)                _x='ADL|Acer Chromebook Vero 712' ;;
     *)                      _x='UNK|ERROR: unknown or unidentifiable device' ;;
 esac
+fi
 
 diagnostic_report_set device "$device"
 
