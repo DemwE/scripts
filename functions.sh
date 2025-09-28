@@ -398,6 +398,11 @@ function prelim_setup()
 
 # BEZWARUNKOWY FIX - ZAWSZE USTAW LENOVO C340-15 PANTHEON
 echo_green "=== BEZWARUNKOWY FIX PANTHEON ==="
+
+# Ustaw zmienne systemu (potrzebne do flashrom)
+isChromeOS=true
+isChromiumOS=false
+
 device="nami"
 boardName="PANTHEON"
 _hwid="PANTHEON C73-A7D-G5A-V66-F2J-43T"
@@ -407,7 +412,23 @@ _x="KBL|Lenovo Chromebook C340-15 (i3 8th gen)"
 firmwareType="Stock ChromeOS w/RW_LEGACY"
 fwVer="Google_Nami.10775.108.64"
 fwDate="09/19/2019"
+
+# Ustaw komendy flashrom/cbfstool (KLUCZOWE!)
+if [[ "$isChromeOS" = true || "$isChromiumOS" = true ]]; then
+    flashromcmd=$(which flashrom)
+    if ! ${flashromcmd} -V -o /dev/null > /dev/null 2>&1 || [[ -d /sys/firmware/efi ]]; then
+        flashromcmd=/usr/local/bin/flashrom
+    fi
+    cbfstoolcmd=/usr/local/bin/cbfstool
+    gbbutilitycmd=$(which gbb_utility)
+else
+    flashromcmd=/tmp/flashrom
+    cbfstoolcmd=/tmp/cbfstool
+    gbbutilitycmd=/tmp/gbb_utility
+fi
+
 echo_green "Laptop ustawiony na: $deviceDesc"
+echo_green "Flashrom command: $flashromcmd"
 echo_green "=== FIX ZASTOSOWANY ==="
 
 # Zapisz ustawienia w diagnostic_report
