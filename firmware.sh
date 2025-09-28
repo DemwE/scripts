@@ -1124,7 +1124,7 @@ function stock_menu() {
     if [[ "$unlockMenu" = true || "$isUEFI" = true ]]; then
         echo -e "${MENU}**${WP_TEXT}     ${NUMBER} C)${MENU} Clear UEFI NVRAM ${NORMAL}"
     fi
-    echo -e "${MENU}**${WP_TEXT}     ${NUMBER} D)${MENU} Debug Device Info ${NORMAL}"
+    echo -e "**     D) Debug Device Info"
     echo -e "${MENU}*********************************************************${NORMAL}"
     echo -e "${ENTER_LINE}Select a numeric menu option or${NORMAL}"
     echo -e "${nvram}${RED_TEXT}R${NORMAL} to reboot ${NORMAL} ${RED_TEXT}P${NORMAL} to poweroff ${NORMAL} ${RED_TEXT}Q${NORMAL} to quit ${NORMAL}"
@@ -1252,7 +1252,7 @@ function uefi_menu() {
     if [[ "$unlockMenu" = true || "$isUEFI" = true ]]; then
         echo -e "${MENU}**${WP_TEXT}     ${NUMBER} C)${MENU} Clear UEFI NVRAM ${NORMAL}"
     fi
-    echo -e "${MENU}**${WP_TEXT}     ${NUMBER} 9)${MENU} Debug Device Info ${NORMAL}"
+    echo -e "**     9) Debug Device Info"
     echo -e "${MENU}*********************************************************${NORMAL}"
     echo -e "${ENTER_LINE}Select a numeric menu option or${NORMAL}"
     echo -e "${nvram}${RED_TEXT}R${NORMAL} to reboot ${NORMAL} ${RED_TEXT}P${NORMAL} to poweroff ${NORMAL} ${RED_TEXT}Q${NORMAL} to quit ${NORMAL}"
