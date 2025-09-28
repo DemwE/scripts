@@ -1132,6 +1132,11 @@ function stock_menu() {
     read -re opt
     case $opt in
 
+        [dD]) printf "\nWYKRYTO OPCJĘ D - wywołuję debug_device_info\n"
+            debug_device_info
+            menu_fwupdate
+            ;;
+
         1)  if [[ "$unlockMenu" = true || ( "$isFullRom" = false && "$isBootStub" = false && "$isUnsupported" = false \
                       && ("$isCmlBook" = false || "$device" == "drallion") && "$isEOL" = false ) ]]; then
                 flash_rwlegacy
@@ -1214,10 +1219,6 @@ function stock_menu() {
         [cC]) if [[ "$unlockMenu" = true || "$isUEFI" = true ]]; then
                 clear_nvram
             fi
-            menu_fwupdate
-            ;;
-
-        [dD]) debug_device_info
             menu_fwupdate
             ;;
 
@@ -1314,7 +1315,8 @@ function uefi_menu() {
             uefi_menu
             ;;
 
-        9) debug_device_info
+        9) printf "\nWYKRYTO OPCJĘ 9 - wywołuję debug_device_info\n"
+            debug_device_info
             uefi_menu
             ;;
 
@@ -1325,21 +1327,23 @@ function uefi_menu() {
 }
 
 function debug_device_info() {
-    echo_green "\n=== DEBUG DEVICE INFO ==="
-    echo_yellow "DEBUG: device (from dmidecode) = '$device'"
-    echo_yellow "DEBUG: firmwareType = '$firmwareType'"
-    echo_yellow "DEBUG: _hwid = '$_hwid'"
-    echo_yellow "DEBUG: boardName = '$boardName'"
-    echo_yellow "DEBUG: Match result _x = '$_x'"
-    echo_yellow "DEBUG: deviceDesc = '$deviceDesc'"
-    echo_yellow "DEBUG: deviceCpuType = '$deviceCpuType'"
+    printf "\n\n==== FUNKCJA DEBUG ZOSTAŁA WYWOŁANA ====\n"
+    printf "=== DEBUG DEVICE INFO ===\n"
+    printf "DEBUG: device (from dmidecode) = '%s'\n" "$device"
+    printf "DEBUG: firmwareType = '%s'\n" "$firmwareType"
+    printf "DEBUG: _hwid = '%s'\n" "$_hwid"
+    printf "DEBUG: boardName = '%s'\n" "$boardName"
+    printf "DEBUG: Match result _x = '%s'\n" "$_x"
+    printf "DEBUG: deviceDesc = '%s'\n" "$deviceDesc"
+    printf "DEBUG: deviceCpuType = '%s'\n" "$deviceCpuType"
 
     if [[ "$_x" == *"unknown"* ]]; then
-        echo_red "\nBŁĄD: Nie znaleziono dopasowania dla HWID: '${_hwid}'"
-        echo_yellow "Sprawdź czy HWID jest poprawny i czy istnieje wpis w case statement"
+        printf "\nBŁĄD: Nie znaleziono dopasowania dla HWID: '%s'\n" "$_hwid"
+        printf "Sprawdź czy HWID jest poprawny i czy istnieje wpis w case statement\n"
     else
-        echo_green "\nSUKCES: Znaleziono dopasowanie!"
+        printf "\nSUKCES: Znaleziono dopasowanie!\n"
     fi
 
-    read -p "\nNaciśnij ENTER aby powrócić do menu..."
+    printf "\nNaciśnij ENTER aby powrócić do menu..."
+    read -r
 }
